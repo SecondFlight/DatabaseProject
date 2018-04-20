@@ -286,3 +286,10 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# User-defined
+peoplefinder-images/
+ejoker-images/
+removedUsers.json
+userdata.json
+usernames.json
