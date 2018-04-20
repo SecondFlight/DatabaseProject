@@ -13,7 +13,7 @@ Due to the private nature of the data in this project, the data files have not b
 - peoplefinder-images/
 - ejoker-images/
 
-You will likely need to install some nuget packages. Here are the instructions for Mac:
+You might need to install some nuget packages. Here's something to try for Mac if it doesn't work out of the box:
 1. open a terminal
 2. cd to project directory
 3. type in the following commands:
