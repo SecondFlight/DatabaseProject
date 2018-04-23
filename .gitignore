@@ -293,5 +293,6 @@ ejoker-images/
 removedUsers.json
 userdata.json
 usernames.json
+users.db
 
 .DS_Store
