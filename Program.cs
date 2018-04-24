@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using DatabaseProjectTest;
 
 namespace DatabaseProject
 {
@@ -14,7 +15,7 @@ namespace DatabaseProject
         {
             while (true)
             {
-                Console.Write("(a)dd data, (r)un queries, e(x)it: ");
+                Console.Write("(a)dd data, (r)un queries, check (b)irthday, e(x)it: ");
                 var input = Console.ReadKey();
                 if (input.KeyChar == 'a')
                 {
@@ -23,65 +24,25 @@ namespace DatabaseProject
                 else if (input.KeyChar == 'r')
                 {
                     PrintSpacer();
-                    GetUserStats();
+                    JoshStats.GetMajorCounts();
                     PrintSpacer();
+                    JoshStats.GetRelationshipStats();
+                    PrintSpacer();
+                    JoshStats.BioInfo();
+                    PrintSpacer();
+                }
+                else if (input.KeyChar == 'b')
+                {
+                    JoshStats.GetSameBirthday();
                 }
                 else if (input.KeyChar == 'x')
                 {
                     break;
                 }
-            }
-        }
-
-        static void GetUserStats()
-        {
-            using (var db = new DatabaseContext())
-            {
-                int userCount = db.Users.Count();
-                int usersWithDataCount = CountUsersWhoPutData();
-                Console.WriteLine("There are " + userCount.ToString() + " users.");
-                Console.WriteLine("Info was added by " + usersWithDataCount.ToString() + " users, or only " + Math.Round(((double)usersWithDataCount * 100) / userCount).ToString() + "% of users.");
-                int totalCountWhoPutRelStatus = db.RelationshipStatuses.Count();
-                Console.WriteLine(totalCountWhoPutRelStatus.ToString() + " users put a relationship status.");
-                int singleCount = db.RelationshipStatuses.Where(x => x.status == "Single").Count();
-                int inARelationshipCount = db.RelationshipStatuses.Where(x => x.status == "In a relationship").Count();
-                int engagedCount = db.RelationshipStatuses.Where(x => x.status == "Engaged").Count();
-                int marriedCount = db.RelationshipStatuses.Where(x => x.status == "Married").Count();
-                Console.WriteLine(singleCount + " (" + Math.Round(((double)100 * singleCount) / 100).ToString() + "%) put their status as \"Single\".");
-                Console.WriteLine(inARelationshipCount + " (" + Math.Round(((double)100 * inARelationshipCount) / 100).ToString() + "%) put their status as \"In a relationship\".");
-                Console.WriteLine(engagedCount + " (" + Math.Round(((double)100 * engagedCount) / 100).ToString() + "%) put their status as \"Engaged\".");
-                Console.WriteLine(marriedCount + " (" + Math.Round(((double)100 * marriedCount) / 100).ToString() + "%) put their status as \"Married\".");
-            }
-        }
-
-        static int CountUsersWhoPutData()
-        {
-            using (var db = new DatabaseContext())
-            {
-                int result = 0;
-                foreach (var user in db.Users)
+                else
                 {
-                    var username = user.userName;
-                    if (db.Bios.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Books.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Careers.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.UserClubs.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        /*db.ContactInfos.Where(x => x.userName == username).FirstOrDefault() != null ||*/
-                        db.Foods.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Hobbies.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.UserInterests.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Locations.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Movies.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Musics.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Personality.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.PetPeeves.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.RelationshipStatuses.Where(x => x.userName == username).FirstOrDefault() != null ||
-                        db.Shows.Where(x => x.userName == username).FirstOrDefault() != null)
-                    {
-                        result++;
-                    }
+                    Console.Clear();
                 }
-                return result;
             }
         }
 
