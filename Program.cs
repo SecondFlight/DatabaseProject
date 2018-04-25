@@ -195,9 +195,9 @@ namespace DatabaseProject
             using (var db = new DatabaseContext())
             {
                 int BirthdayCount = db.Users.Where(x => x.birthdayMonth == 6).Count();
-                Console.WriteLine("There are " + BirthdayCount + " people born in the month of June");
+                Console.WriteLine("There are " + BirthdayCount + " people born in the month of June (Just like Jonathan)");
                 int countJonathans = db.Users.Where(x => x.firstName == "Jonathan" || x.firstName == "Johnathan" || x.firstName == "jonathan" || x.firstName == "johnathan").Count();
-                Console.WriteLine("There are " + countJonathans + " people named Jonathan or Johnathan");
+                Console.WriteLine("There are " + countJonathans + " people named Jonathan (The right way) or Johnathan (The Wrong Way)");
             }
         }
 
