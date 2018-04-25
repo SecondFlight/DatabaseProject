@@ -23,7 +23,73 @@ namespace DatabaseProject
                 else if (input.KeyChar == 'r')
                 {
                     PrintSpacer();
-                    GetUserStats();
+                    Console.WriteLine("What would you like to know? (Keep in mind not everyone input data)");
+                    Console.WriteLine("General Data             -     G: ");
+                    Console.WriteLine("Stats about Jonathan     -     J: ");
+                    Console.WriteLine("Count Majors             -     M: ");
+                    Console.WriteLine("Count Names              -     N: ");
+                    Console.WriteLine("Favorite Foods           -     F: ");
+                    Console.WriteLine("Favorite Movies          -     O: ");
+                    Console.WriteLine("Personality Type         -     P: ");
+                    Console.WriteLine("Relationship Status      -     R: ");
+                    Console.WriteLine("Music                    -     A: ");
+                    Console.WriteLine("Shows                    -     S: ");
+                    Console.WriteLine("Hobbies                  -     H: ");
+                    Console.WriteLine("Career Goals             -     C: ");
+                    Console.Write("So what'll it be? ");
+                    char c = Char.ToUpper(Console.ReadKey().KeyChar);
+                    Console.WriteLine();
+                    switch (c)
+                    {
+                        case 'C':
+                            Console.WriteLine();
+                            CareerGoals();
+                            break;
+                        case 'H':
+                            Console.WriteLine();
+                            Hobbies();
+                            break;
+                        case 'S':
+                            Console.WriteLine();
+                            FaveShows();
+                            break;
+                        case 'A':
+                            Console.WriteLine();
+                            FaveMusic();
+                            break;
+                        case 'R':
+                            Console.WriteLine();
+                            RelationshipStatus();
+                            break;
+                        case 'P':
+                            Console.WriteLine();
+                            PersonalityType();
+                            break;
+                        case 'O':
+                            Console.WriteLine();
+                            FavoriteMovies();
+                            break;
+                        case 'F' :
+                            Console.WriteLine();
+                            FavoriteFoods();
+                            break;
+                        case 'N' :
+                            Console.WriteLine();
+                            CountName();
+                            break;
+                        case 'G':
+                            Console.WriteLine();
+                            GetUserStats();
+                            break;
+                        case 'J':
+                            Console.WriteLine();
+                            Stats();
+                            break;
+                        case 'M':
+                            Console.WriteLine();
+                            CountMajors();
+                            break;
+                    }
                     PrintSpacer();
                 }
                 else if (input.KeyChar == 'x')
@@ -47,10 +113,207 @@ namespace DatabaseProject
                 int inARelationshipCount = db.RelationshipStatuses.Where(x => x.status == "In a relationship").Count();
                 int engagedCount = db.RelationshipStatuses.Where(x => x.status == "Engaged").Count();
                 int marriedCount = db.RelationshipStatuses.Where(x => x.status == "Married").Count();
-                Console.WriteLine(singleCount + " (" + Math.Round(((double)100 * singleCount) / 100).ToString() + "%) put their status as \"Single\".");
-                Console.WriteLine(inARelationshipCount + " (" + Math.Round(((double)100 * inARelationshipCount) / 100).ToString() + "%) put their status as \"In a relationship\".");
-                Console.WriteLine(engagedCount + " (" + Math.Round(((double)100 * engagedCount) / 100).ToString() + "%) put their status as \"Engaged\".");
-                Console.WriteLine(marriedCount + " (" + Math.Round(((double)100 * marriedCount) / 100).ToString() + "%) put their status as \"Married\".");
+                Console.WriteLine(singleCount + " (" + Math.Round(((double)100.0 * singleCount) / totalCountWhoPutRelStatus).ToString() + "%) put their status as \"Single\".");
+                Console.WriteLine(inARelationshipCount + " (" + Math.Round(((double)100.0 * inARelationshipCount) / totalCountWhoPutRelStatus).ToString() + "%) put their status as \"In a relationship\".");
+                Console.WriteLine(engagedCount + " (" + Math.Round(((double)100.0 * engagedCount) / totalCountWhoPutRelStatus).ToString() + "%) put their status as \"Engaged\".");
+                Console.WriteLine(marriedCount + " (" + Math.Round(((double)100.0 * marriedCount) / totalCountWhoPutRelStatus).ToString() + "%) put their status as \"Married\".");
+            }
+        }
+
+        static void CareerGoals()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Name a career and I'll count the people who want to work in that field: ");
+                string career = Console.ReadLine().ToUpper();
+                int careerCount = db.Careers.Where(x => x.careerGoals.ToUpper().Contains(career)).Count();
+                int totalCareers = db.Careers.Count();
+                Console.WriteLine();
+                Console.WriteLine("There are " + careerCount + " people who like the show " + career);
+                Console.WriteLine("Out of " + totalCareers + " people who added data for this category, that is " + (careerCount * 100.0) / totalCareers + "%");
+            }
+        }
+
+        static void FaveShows()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Name a show and I'll count the people who like it: ");
+                string show = Console.ReadLine().ToUpper();
+                int showCount = db.Shows.Where(x => x.shows.ToUpper().Contains(show)).Count();
+                int totalShows = db.Shows.Count();
+                Console.WriteLine();
+                Console.WriteLine("There are " + showCount + " people who like the show " + show);
+                Console.WriteLine("Out of " + totalShows + " people who added data for this category, that is " + (showCount * 100.0) / totalShows + "%");
+            }
+        }
+
+        static void Hobbies()
+        {
+            using (var db = new DatabaseContext()) 
+            {
+                Console.Write("Name a hobby to see how many people enjoy that: ");
+                string hobby = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                int hobbyCount = db.Hobbies.Where(x => x.hobbies.ToUpper().Contains(hobby)).Count();
+                Console.WriteLine("There are " + hobbyCount + " people who enjoy " + hobby);
+                int totalHobbies = db.Hobbies.Count();
+                Console.WriteLine("Out of " + totalHobbies + " people who added data for this category, that is " + Math.Round((hobbyCount * 100.0) / totalHobbies, 2) + "%");
+            }
+        }
+
+        static void FaveMusic()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Name a song/artist/genre to see how many people like it: ");
+                string music = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                int musicCount = db.Musics.Where(x => x.music.ToUpper().Contains(music)).Count();
+                Console.WriteLine("There are " + musicCount + " people who like " + music);
+                int totalMusic = db.Musics.Count();
+                Console.WriteLine("Out of " + totalMusic + " people who added data for this category, that is " + Math.Round((musicCount * 100.0) / totalMusic, 2) + "%");
+            }
+        }
+
+        static void PersonalityType()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("What Meyers-Briggs Personality Type would you like to check? ");
+                string pt = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                int ptCount = db.Personality.Where(x => x.personalityType.ToUpper() == pt).Count();
+                Console.WriteLine("There are " + ptCount + " people with a personality type of " + pt);
+                int totalPt = db.Personality.Count();
+                Console.WriteLine("Out of " + totalPt + " people who added data for this category, that is " + Math.Round((ptCount * 100.0) / totalPt,2) + "%");
+            }
+        }
+
+        static void Stats()
+        {
+            using (var db = new DatabaseContext())
+            {
+                int BirthdayCount = db.Users.Where(x => x.birthdayMonth == 6).Count();
+                Console.WriteLine("There are " + BirthdayCount + " people born in the month of June");
+                int countJonathans = db.Users.Where(x => x.firstName == "Jonathan" || x.firstName == "Johnathan" || x.firstName == "jonathan" || x.firstName == "johnathan").Count();
+                Console.WriteLine("There are " + countJonathans + " people named Jonathan or Johnathan");
+            }
+        }
+
+        static void RelationshipStatus()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.WriteLine("What relationship status would you like to count?");
+                Console.WriteLine("Single - S");
+                Console.WriteLine("In A Relationship - R");
+                Console.WriteLine("Engaged - E");
+                Console.WriteLine("Married - M");
+                int totalRel = db.RelationshipStatuses.Count();
+                char c = Char.ToUpper(Console.ReadKey().KeyChar);
+                switch (c)
+                {
+                    case 'M':
+                        Console.WriteLine();
+                        int married = db.RelationshipStatuses.Where(x => x.status == "Married").Count();
+                        Console.WriteLine("There are " + married + " people who are married");
+                        Console.WriteLine("Out of " + totalRel + " people who added data for this category, that is " + Math.Round((married * 100.0) / totalRel,2) + "%");
+                        break;
+                    case 'E':
+                        Console.WriteLine();
+                        int engaged = db.RelationshipStatuses.Where(x => x.status == "Engaged").Count();
+                        Console.WriteLine("There are " + engaged + " people who are engaged");
+                        Console.WriteLine("Out of " + totalRel + " people who added data for this category, that is " + Math.Round((engaged * 100.0) / totalRel, 2) + "%");
+                        break;
+                    case 'R':
+                        Console.WriteLine();
+                        int iar = db.RelationshipStatuses.Where(x => x.status == "In a relationship").Count();
+                        Console.WriteLine("There are " + iar + " people who are in a realtionship");
+                        Console.WriteLine("Out of " + totalRel + " people who added data for this category, that is " + Math.Round((iar * 100.0) / totalRel,2) + "%");
+                        break;
+                    case 'S':
+                        Console.WriteLine();
+                        int single = db.RelationshipStatuses.Where(x => x.status == "Single").Count();
+                        Console.WriteLine("There are " + single + " people who are single");
+                        Console.WriteLine("Out of " + totalRel + " people who added data for this category, that is " + Math.Round((single * 100.0) / totalRel, 2) + "%");
+                        break;
+                }
+            }
+        }
+
+        static void CountMajors()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("What major would you like to count? ");
+                string major = Console.ReadLine().ToUpper();
+                int majorCount = db.UserMajors.Where(x => x.major.ToUpper().Contains(major)).Count();
+                Console.WriteLine("There are " + majorCount + " people majoring in " + major);
+                int totalMajors = db.UserMajors.Count();
+                Console.WriteLine("Out of " + totalMajors + " people, that is " + Math.Round((majorCount * 100.0) / totalMajors, 2) + "%");
+            }
+        }
+
+        static void CountName()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Would you like to count first or last names? ");
+                string input = Console.ReadLine().ToUpper();
+                if(input.Contains("FIRST"))
+                {
+                    Console.Write("What first name would you like to count? ");
+                    string name = Console.ReadLine().ToUpper();
+                    Console.WriteLine();
+                    int nameCount = db.Users.Where(x => x.firstName.ToUpper() == name).Count();
+                    Console.WriteLine("There are " + nameCount + " people with the first name " + name);
+                    int totalPeople = db.Users.Count();
+                    Console.WriteLine("Out of " + totalPeople + " people, that is " + Math.Round((nameCount * 100.0) / totalPeople, 2) + "%");
+                }
+                else if (input.Contains("LAST"))
+                {
+                    Console.Write("What last name would you like to count? ");
+                    string name = Console.ReadLine().ToUpper();
+                    Console.WriteLine();
+                    int nameCount = db.Users.Where(x => x.lastName.ToUpper() == name).Count();
+                    Console.WriteLine("There are " + nameCount + " people with the last name " + name);
+                    int totalPeople = db.Users.Count();
+                    Console.WriteLine("Out of " + totalPeople + " people, that is " + Math.Round((nameCount * 100.0) / totalPeople, 2) + "%");
+                }
+                else
+                {
+                    Console.WriteLine("Sorry, that's an invalid request. We really didn't demand much of you...");
+                }
+
+            }
+        }
+
+        static void FavoriteFoods()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Name a food and I'll tell you how many people like it: ");
+                string food = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                int foodCount = db.Foods.Where(x => x.foods.ToUpper().Contains(food)).Count();
+                Console.WriteLine("There are " + foodCount + " people who like " + food);
+                int totalPeople = db.Foods.Count();
+                Console.WriteLine("Out of " + totalPeople + " people who added data for this category, that is " + Math.Round((foodCount * 100.0) / totalPeople, 2) + "%");
+            }
+        }
+
+        static void FavoriteMovies()
+        {
+            using (var db = new DatabaseContext())
+            {
+                Console.Write("Name a movie and I'll tell you how many people like it: ");
+                string movie = Console.ReadLine().ToUpper();
+                Console.WriteLine();
+                int movieCount = db.Movies.Where(x => x.movies.ToUpper().Contains(movie)).Count();
+                Console.WriteLine("There are " + movieCount + " people who like " + movie);
+                int totalPeople = db.Movies.Count();
+                Console.WriteLine("Out of " + totalPeople + " people who added data for this category, that is " + Math.Round((movieCount * 100.0) / totalPeople, 2) + "%");
             }
         }
 
